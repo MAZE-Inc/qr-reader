@@ -13,6 +13,7 @@
     body {
       text-align: center;
       font-family: 'Ropa Sans', sans-serif;
+      font-size: 40px;
       color: #333;
       background-color: #3666b9;
       max-width: 640px;
@@ -28,12 +29,13 @@
     }
 
     h1 {
-      margin: 10px 0;
-      font-size: 40px;
+      margin: 30px 0;
+      font-size: 50px;
     }
 
     #loadingMessage {
       text-align: center;
+      font-size: 30px;
       padding: 40px;
       background-color: #eee;
     }
@@ -66,9 +68,10 @@
   <div id="loadingMessage">🎥 카메라 접근을 허용해 주세요.</div>
   <canvas id="canvas" hidden></canvas>
   <div id="output" hidden>
-    <div id="outputMessage">No QR code detected.</div>
+    <div id="outputMessage">QR 코드가 인식되지 않습니다.</div>
     <div hidden><b>Data:</b> <span id="outputData"></span></div>
   </div>
+  <div>data가 이게 맞나요? Data:<span id="result"></span></div>
   <script>
     var video = document.createElement("video");
     var canvasElement = document.getElementById("canvas");
@@ -77,6 +80,7 @@
     var outputContainer = document.getElementById("output");
     var outputMessage = document.getElementById("outputMessage");
     var outputData = document.getElementById("outputData");
+    var result = document.getElementById("result");
 
     function drawLine(begin, end, color) {
       canvas.beginPath();
@@ -117,6 +121,7 @@
           outputMessage.hidden = true;
           outputData.parentElement.hidden = false;
           outputData.innerText = code.data;
+          result.innerText = code.data;
         } else {
           outputMessage.hidden = false;
           outputData.parentElement.hidden = true;
