@@ -57,7 +57,6 @@
     }
 
     #textbox{
-      width: 120px;
       text-align: center;
       margin: 20px 0;
     }
@@ -69,7 +68,7 @@
     
     select {
       width: 130px;
-      height: 30px;
+      height: 35px;
       font-size: 20px;
     }
 
@@ -86,6 +85,20 @@
 	  background-color: #ffffff00;
       border: solid 2px;
     }
+
+    .word {
+        margin:100px;
+        outline: 1px solid black;
+        height: 40px;
+        display: block;
+        color: black;
+        width: 630px;
+        font-size: 20px;
+        font-weight: bolder !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
   </style>
 </head>
 <body>
@@ -98,7 +111,8 @@
     <div id="outputMessage">QR 코드가 인식되지 않습니다.</div>
     <div hidden><b>Data:</b> <span id="outputData"></span></div>
   </div>
-  <div id="textbox">Data:<span id="result"></span></div>
+  <div id="textbox">Data</div>
+  <div id="textbox" class="word"><span id="result"></span></div>
   <select id="trackList">
       <option value="track1">Track 1</option>
       <option value="track2">Track 2</option>
