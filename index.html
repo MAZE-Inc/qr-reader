@@ -1,22 +1,22 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>QR test</title>
+  <title>QR Reader</title>
   <script src="./jsQR.js"></script>
   <script src="https://kit.fontawesome.com/711c10325e.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="css/main.css" />
   <link
     rel="shortcut icon"
     type="image/x-icon"
-    href="/assets/favicon_io/favicon.ico"
+    href="./assets/favicon_io/favicon.ico"
   />
   <style>
     body {
       text-align: center;
       font-family: 'Ropa Sans', sans-serif;
-      font-size: 40px;
-      color: #333;
-      background-color: #4b7acb;
+      font-size: 60px;
+      color: #fff;
+      background-color: #37b5c9;
       max-width: 640px;
       margin: 0 auto;
       position: relative;
@@ -32,8 +32,8 @@
       text-align: center;
       font-size: 30px;
       margin: 30px 0;
-      padding: 60px;
-      background-color: #eee;
+      padding: 120px;
+      background-color: rgb(119, 119, 119);
     }
 
     #canvas {
@@ -73,7 +73,7 @@
     }
 
     button {
-	  width: 200px;
+	  width: 240px;
 	  padding: 15px 0;
       /* margin-top: 20px; */
 	  margin-bottom: 85px;
@@ -89,10 +89,10 @@
     .word {
         margin:100px;
         padding: 10px 2px 0px 2px;
-        outline: 1px solid black;
+        outline: 1px solid rgb(255, 255, 255);
         height: 40px;
         display: block;
-        color: black;
+        color: rgb(255, 255, 255);
         width: 630px;
         font-size: 30px;
         font-weight: bolder !important;
@@ -103,10 +103,9 @@
   </style>
 </head>
 <body>
-  <h1>QR test</h1>
-  <!-- <a id="githubLink" href="https://github.com/cozmo/jsQR">View documentation on Github</a> -->
+  <h1>QR Reader</h1>
   <p>QR 코드 인식 카메라</p>
-  <div id="loadingMessage">🎥 카메라 접근을 허용해 주세요.</div>
+  <div id="loadingMessage">🎥  카메라 접근을 허용해 주세요.</div>
   <canvas id="canvas" hidden></canvas>
   <div id="output" hidden>
     <div id="outputMessage">QR 코드가 인식되지 않습니다.</div>
@@ -115,12 +114,16 @@
   <div id="textbox">Data</div>
   <div id="textbox" class="word"><span id="result"></span></div>
   <select id="trackList">
-      <option value="track1">Track 1</option>
-      <option value="track2">Track 2</option>
-      <option value="track3">Track 3</option>
+      <option value="" selected>선택없음</option>
+      <option value="?trkgbn=track1">Track 1</option>
+      <option value="?trkgbn=track2">Track 2</option>
+      <option value="?trkgbn=track3">Track 3</option>
   </select>
-  <div id="textbox2"><b>이렇게 됩니다: <span id="result"></span>?trkgbn=<span id="track"></span></b></div>
+  <div id="textbox2"><b>https://qr.marple.co.kr/qrcode/<span id="linkAdd"><span id="result2"></span><span id="track"></span></span></b></div>
+  <!-- 서버에 post도 보내는 버튼 -->
+  <!-- <button onclick="onButtonClicked(); location.href='success/index.html';">전송하기 <i class="fa-solid fa-notes-medical"></i></button> -->
   <button onclick="location.href='success/index.html';">전송하기 <i class="fa-solid fa-notes-medical"></i></button>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
   <script>
     var video = document.createElement("video");
     var canvasElement = document.getElementById("canvas");
@@ -130,14 +133,32 @@
     var outputMessage = document.getElementById("outputMessage");
     var outputData = document.getElementById("outputData");
     var result = document.getElementById("result");
+    var result2 = document.getElementById("result2");
     var track = document.getElementById("track");
     var trackList = document.getElementById("trackList");
+    var fullLink = document.getElementById("textbox2");
+
     function show(){
         var trackValue = trackList.options[trackList.selectedIndex].value;
         track.innerText = trackValue;
     }
     trackList.onchange=show;
     show(); 
+
+    function onButtonClicked(){
+        console.log(fullLink.innerText)
+
+        // ! 서버 요청
+        // let body = {link: fullLink.innerText};
+        
+        // axios.post(`SERVER_URL/`, body, { withCredentials: true })
+        // .then(function (result) {
+        //     console.log("통신 결과 : ", result);
+        // })
+        // .catch(function (error) {
+        //     console.log("에러 발생 : ", error);
+        // });
+    }
 
 
     function drawLine(begin, end, color) {
@@ -162,7 +183,7 @@
       if (video.readyState === video.HAVE_ENOUGH_DATA) {
         loadingMessage.hidden = true;
         canvasElement.hidden = false;
-        outputContainer.hidden = false;
+        // outputContainer.hidden = false;
 
         canvasElement.height = video.videoHeight;
         canvasElement.width = video.videoWidth;
@@ -180,8 +201,9 @@
           outputData.parentElement.hidden = false;
           outputData.innerText = code.data;
           result.innerText = code.data;
+          result2.innerText = code.data;
         } else {
-          outputMessage.hidden = false;
+        //   outputMessage.hidden = false;
           outputData.parentElement.hidden = true;
         }
       }
