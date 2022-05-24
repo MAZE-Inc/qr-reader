@@ -1,33 +1,37 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>jsQR Demo</title>
-  <script src="./jsQR.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Ropa+Sans" rel="stylesheet">
+  <title>QR test</title>
+  <script src="../jsQR.js"></script>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link
+    rel="shortcut icon"
+    type="image/x-icon"
+    href="../assets/favicon_io/favicon.ico"
+  />
   <style>
     body {
+      text-align: center;
       font-family: 'Ropa Sans', sans-serif;
+      font-size: 40px;
       color: #333;
+      background-color: #4b7acb;
       max-width: 640px;
       margin: 0 auto;
       position: relative;
     }
 
-    #githubLink {
-      position: absolute;
-      right: 0;
-      top: 12px;
-      color: #2D99FF;
-    }
-
     h1 {
-      margin: 10px 0;
-      font-size: 40px;
+      margin: 200px 0 60px 0;
+      color: #fff;
+      font-size: 120px;
     }
 
-    #loadingMessage {
+    #Message {
       text-align: center;
-      padding: 40px;
+      font-size: 30px;
+      margin: 30px 0;
+      padding: 60px;
       background-color: #eee;
     }
 
@@ -50,18 +54,17 @@
     #noQRFound {
       text-align: center;
     }
+
+    #textbox{
+      margin: 20px 0;
+    }
   </style>
 </head>
 <body>
-  <h1>jsQR Demo</h1>
-  <a id="githubLink" href="https://github.com/cozmo/jsQR">View documentation on Github</a>
-  <p>Pure JavaScript QR code decoding library.</p>
-  <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
+  <h1>QR test</h1>
+  <p>QR 코드 인식 카메라</p>
+  <div id="Message">Success!!</div>
   <canvas id="canvas" hidden></canvas>
-  <div id="output" hidden>
-    <div id="outputMessage">No QR code detected.</div>
-    <div hidden><b>Data:</b> <span id="outputData"></span></div>
-  </div>
   <script>
     var video = document.createElement("video");
     var canvasElement = document.getElementById("canvas");
@@ -70,6 +73,7 @@
     var outputContainer = document.getElementById("output");
     var outputMessage = document.getElementById("outputMessage");
     var outputData = document.getElementById("outputData");
+    var result = document.getElementById("result");
 
     function drawLine(begin, end, color) {
       canvas.beginPath();
@@ -110,6 +114,7 @@
           outputMessage.hidden = true;
           outputData.parentElement.hidden = false;
           outputData.innerText = code.data;
+          result.innerText = code.data;
         } else {
           outputMessage.hidden = false;
           outputData.parentElement.hidden = true;
