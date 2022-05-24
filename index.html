@@ -59,7 +59,18 @@
     #textbox{
       margin: 20px 0;
     }
+
+    #textbox2{
+      margin: 20px 0;
+      font-size: 30px;
+    }
     
+    select {
+      width: 100px;
+      height: 30px;
+      font-size: 20px;
+    }
+
     button {
 	  width: 200px;
 	  padding: 15px 0;
@@ -86,6 +97,12 @@
     <div hidden><b>Data:</b> <span id="outputData"></span></div>
   </div>
   <div id="textbox">맞나요? Data:<span id="result"></span></div>
+  <select id="trackList">
+      <option value="track1">Track 1</option>
+      <option value="track2">Track 2</option>
+      <option value="track3">Track 3</option>
+  </select>
+  <div id="textbox2"><b>이렇게 됩니다: trkgbn=<span id="track"></span></b></div>
   <button onclick="location.href='success/index.html';">전송하기 <i class="fa-solid fa-notes-medical"></i></button>
   <script>
     var video = document.createElement("video");
@@ -96,6 +113,9 @@
     var outputMessage = document.getElementById("outputMessage");
     var outputData = document.getElementById("outputData");
     var result = document.getElementById("result");
+    var track = document.getElementById("track");
+    var trackList = document.getElementById("trackList");
+    var trackValue = trackList.options[trackList.selectedIndex].value;
 
     function drawLine(begin, end, color) {
       canvas.beginPath();
@@ -137,6 +157,7 @@
           outputData.parentElement.hidden = false;
           outputData.innerText = code.data;
           result.innerText = code.data;
+          track.innerText = trackValue;
         } else {
           outputMessage.hidden = false;
           outputData.parentElement.hidden = true;
