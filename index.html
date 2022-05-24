@@ -117,7 +117,13 @@
     var result = document.getElementById("result");
     var track = document.getElementById("track");
     var trackList = document.getElementById("trackList");
-    var trackValue = trackList.options[trackList.selectedIndex].value;
+    function show(){
+        var trackValue = trackList.options[trackList.selectedIndex].value;
+        track.innerText = trackValue;
+    }
+    trackList.onchange=show;
+    show(); 
+
 
     function drawLine(begin, end, color) {
       canvas.beginPath();
@@ -159,7 +165,6 @@
           outputData.parentElement.hidden = false;
           outputData.innerText = code.data;
           result.innerText = code.data;
-          track.innerText = trackValue;
         } else {
           outputMessage.hidden = false;
           outputData.parentElement.hidden = true;
