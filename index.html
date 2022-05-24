@@ -107,10 +107,10 @@
   <p>QR 코드 인식 카메라</p>
   <div id="loadingMessage">🎥 카메라 접근을 허용해 주세요.</div>
   <canvas id="canvas" hidden></canvas>
-  <div id="output" hidden>
+  <!-- <div id="output" hidden>
     <div id="outputMessage">QR 코드가 인식되지 않습니다.</div>
     <div hidden><b>Data:</b> <span id="outputData"></span></div>
-  </div>
+  </div> -->
   <div id="textbox">Data</div>
   <div id="textbox" class="word"><span id="result"></span></div>
   <select id="trackList">
@@ -118,7 +118,7 @@
       <option value="track2">Track 2</option>
       <option value="track3">Track 3</option>
   </select>
-  <div id="textbox2"><b>이렇게 됩니다: trkgbn=<span id="track"></span></b></div>
+  <div id="textbox2"><b>이렇게 됩니다: <span id="result"></span>?trkgbn=<span id="track"></span></b></div>
   <button onclick="location.href='success/index.html';">전송하기 <i class="fa-solid fa-notes-medical"></i></button>
   <script>
     var video = document.createElement("video");
