@@ -121,10 +121,10 @@
       <option value="?trkgbn=track3">Track 3</option>
   </select>
   <div hidden>
-    <!--TODO :https://qr.marple.co.kr/qrcode/ 부분을 qr 관련 링크로 바꾸기-->
+    <!--TODO :https://qr.marple.co.kr/qrcode/ 부분을 qr 관련 링크로 바꿔주세요-->
     <div id="textbox2"><b>https://qr.marple.co.kr/qrcode/<span id="linkAdd"><span id="result2"></span><span id="track"></span></span></b></div>
   </div>
-  <!-- TODO : 서버에 보내는 버튼을 사용할 시 아래 주석 풀기-->
+  <!-- TODO : 서버에 보내는 버튼을 사용할 시 아래 주석 풀어주세요-->
   <!-- <button onclick="onButtonClicked();">전송하기 <i class="fa-solid fa-notes-medical"></i></button> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
   <script>
@@ -152,7 +152,7 @@
     trackList.onchange=show;
     show(); 
 
-    // TODO : 버튼으로 전송할 시 onButtonClicked 내부 주석 풀고 SERVER_URL 부분을 서버 링크로 바꾸기
+    // TODO : 버튼으로 전송할 시 onButtonClicked 내부 주석 풀고 SERVER_URL 부분을 서버 링크로 바꿔주세요.
     function onButtonClicked () {
         console.log(fullLink.innerText)
 
@@ -179,7 +179,7 @@
       let body = {link: fullLink.innerText};
       console.log("body : ", body);
       
-      // TODO : SERVER_URL 부분을 서버 링크로 바꾸기
+      // TODO : SERVER_URL 부분을 서버 링크로 바꿔주세요.
 
       // axios.post(`SERVER_URL/`, body, { withCredentials: true })
       // .then(function (result) {
@@ -241,10 +241,13 @@
           outputData.innerText = code.data;
           result.innerText = code.data;
           result2.innerText = code.data;
-        } else if (result.innerText && stopShow === 'ing') {
+        }
+        else if (result.innerText && stopShow === 'ing') {
+          // TODO: 전송하기 버튼을 사용한다면 이 else if 블록 전체를 주석처리 해주세요.
           // 코드가 인식된 상태일 때
           sendServer ();
-        } else {
+        }
+        else {
         //   outputMessage.hidden = false;
           outputData.parentElement.hidden = true;
         }
