@@ -36,6 +36,16 @@
       background-color: rgb(119, 119, 119);
     }
 
+    #Message {
+      text-align: center;
+      font-size: 40px;
+      color: rgb(8, 8, 8);
+      border-radius: 10px;
+      margin: 30px 0;
+      padding: 120px;
+      background-color: rgb(255, 255, 255);
+    }
+
     #canvas {
       width: 100%;
     }
@@ -86,49 +96,44 @@
       border: solid 2px;
     }
 
-    .word {
-        margin:100px;
-        padding: 10px 2px 0px 2px;
-        outline: 1px solid rgb(255, 255, 255);
-        height: 40px;
-        display: block;
-        color: rgb(255, 255, 255);
-        width: 630px;
-        font-size: 30px;
-        font-weight: bolder !important;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    #trackList {
+      margin: 20px 0;
     }
+
+    
   </style>
 </head>
 <body>
   <h1>QR Reader</h1>
-  <p>QR 코드 인식 카메라</p>
+  <p id="qrCamera">QR 코드 인식 카메라</p>
+  <div id="Message" hidden>Success!!</div>
   <div id="loadingMessage">🎥  카메라 접근을 허용해 주세요.</div>
   <canvas id="canvas" hidden></canvas>
   <div id="output" hidden>
     <div id="outputMessage">QR 코드가 인식되지 않습니다.</div>
     <div hidden><b>Data:</b> <span id="outputData"></span></div>
   </div>
-  <div id="textbox">Data</div>
-  <div id="textbox" class="word"><span id="result"></span></div>
+  <span hidden id="result"></span>
   <select id="trackList">
       <option value="" selected>선택없음</option>
       <option value="?trkgbn=track1">Track 1</option>
       <option value="?trkgbn=track2">Track 2</option>
       <option value="?trkgbn=track3">Track 3</option>
   </select>
-  <div id="textbox2"><b>https://qr.marple.co.kr/qrcode/<span id="linkAdd"><span id="result2"></span><span id="track"></span></span></b></div>
-  <!-- 서버에 post도 보내는 버튼 -->
-  <!-- <button onclick="onButtonClicked(); location.href='success/index.html';">전송하기 <i class="fa-solid fa-notes-medical"></i></button> -->
-  <button onclick="location.href='success/index.html';">전송하기 <i class="fa-solid fa-notes-medical"></i></button>
+  <div hidden>
+    <!--TODO :https://qr.marple.co.kr/qrcode/ 부분을 qr 관련 링크로 바꾸기-->
+    <div id="textbox2"><b>https://qr.marple.co.kr/qrcode/<span id="linkAdd"><span id="result2"></span><span id="track"></span></span></b></div>
+  </div>
+  <!-- TODO : 서버에 보내는 버튼을 사용할 시 아래 주석 풀기-->
+  <!-- <button onclick="onButtonClicked();">전송하기 <i class="fa-solid fa-notes-medical"></i></button> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
   <script>
     var video = document.createElement("video");
     var canvasElement = document.getElementById("canvas");
     var canvas = canvasElement.getContext("2d");
+    var qrCamera= document.getElementById("qrCamera");
     var loadingMessage = document.getElementById("loadingMessage");
+    var message = document.getElementById("Message");
     var outputContainer = document.getElementById("output");
     var outputMessage = document.getElementById("outputMessage");
     var outputData = document.getElementById("outputData");
@@ -138,6 +143,8 @@
     var trackList = document.getElementById("trackList");
     var fullLink = document.getElementById("textbox2");
 
+    var stopShow = 'ing';
+
     function show(){
         var trackValue = trackList.options[trackList.selectedIndex].value;
         track.innerText = trackValue;
@@ -145,12 +152,10 @@
     trackList.onchange=show;
     show(); 
 
-    function onButtonClicked(){
+    // TODO : 버튼으로 전송할 시 onButtonClicked 내부 주석 풀고 SERVER_URL 부분을 서버 링크로 바꾸기
+    function onButtonClicked () {
         console.log(fullLink.innerText)
 
-        // ! 서버 요청
-        // let body = {link: fullLink.innerText};
-        
         // axios.post(`SERVER_URL/`, body, { withCredentials: true })
         // .then(function (result) {
         //     console.log("통신 결과 : ", result);
@@ -158,6 +163,40 @@
         // .catch(function (error) {
         //     console.log("에러 발생 : ", error);
         // });
+
+        stopShow = 'stop';
+
+        message.hidden = false;
+        qrCamera.hidden = true;
+        loadingMessage.hidden = true;
+        trackList.hidden = true;
+        canvas.hidden = true;
+        canvasElement.hidden = true;
+    }
+
+    function sendServer () {
+      // 서버 요청
+      let body = {link: fullLink.innerText};
+      console.log("body : ", body);
+      
+      // TODO : SERVER_URL 부분을 서버 링크로 바꾸기
+
+      // axios.post(`SERVER_URL/`, body, { withCredentials: true })
+      // .then(function (result) {
+      //     console.log("통신 결과 : ", result);
+      // })
+      // .catch(function (error) {
+      //     console.log("에러 발생 : ", error);
+      // });
+
+      stopShow = 'stop';
+
+      message.hidden = false;
+      qrCamera.hidden = true;
+      loadingMessage.hidden = true;
+      trackList.hidden = true;
+      canvas.hidden = true;
+      canvasElement.hidden = true;
     }
 
 
@@ -180,7 +219,7 @@
 
     function tick() {
       loadingMessage.innerText = "⌛ Loading video..."
-      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+      if (video.readyState === video.HAVE_ENOUGH_DATA && stopShow === 'ing') {
         loadingMessage.hidden = true;
         canvasElement.hidden = false;
         // outputContainer.hidden = false;
@@ -192,7 +231,7 @@
         var code = jsQR(imageData.data, imageData.width, imageData.height, {
           inversionAttempts: "dontInvert",
         });
-        if (code) {
+        if (code && !result.innerText) {
           drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58");
           drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
           drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
@@ -202,6 +241,9 @@
           outputData.innerText = code.data;
           result.innerText = code.data;
           result2.innerText = code.data;
+        } else if (result.innerText && stopShow === 'ing') {
+          // 코드가 인식된 상태일 때
+          sendServer ();
         } else {
         //   outputMessage.hidden = false;
           outputData.parentElement.hidden = true;
